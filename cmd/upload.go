@@ -37,6 +37,13 @@ var uploadCmd = &cobra.Command{
 			return
 		}
 
+		lsOut, err := exec.CommandContext(ctx, "b2", "ls", "--recursive", "b2://"+*bucket).CombinedOutput()
+		if err != nil {
+			slog.Error("b2 ls failed", "error", err)
+			return
+		}
+		existingFiles := strings.Split(string(lsOut), "\n")
+
 		fp, un, err := recursiveFolderLS(*folder)
 		if err != nil {
 			slog.Error("recursiveFolderLS err", "error", err)
@@ -46,6 +53,10 @@ var uploadCmd = &cobra.Command{
 		for i := range fp {
 			group.Go(func() error {
 				f, u := fp[i], un[i]
+				if slices.Contains(existingFiles, u) {
+					slog.Info("file already exists", "file", f)
+					return nil
+				}
 				command := exec.CommandContext(ctx, "b2", "file", "upload", *bucket, f, u)
 				if *dryRun {
 					slog.Info("dry run", "command", command.String())
@@ -63,7 +74,11 @@ var uploadCmd = &cobra.Command{
 			slog.Error("file upload failed", "error", err)
 			return
 		}
-		slog.Info("all files uploaded")
+		if *dryRun {
+			slog.Info("dry run")
+		} else {
+			slog.Info("all files uploaded")
+		}
 	},
 }
 
