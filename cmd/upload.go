@@ -113,15 +113,21 @@ func recursiveFolderLS(folder string) (filepaths, uploadnames []string, err erro
 				after := split[1]
 				un = strings.ReplaceAll(un, before, after)
 			}
+
+			doUpload := true
 			if len(*skips) > 0 {
 				for _, skipStr := range *skips {
 					if strings.Contains(fp, skipStr) {
-						continue
+						slog.Info("skipping file", "file", fp)
+						doUpload = false
+						break
 					}
 				}
 			}
-			filepaths = append(filepaths, fp)
-			uploadnames = append(uploadnames, un)
+			if doUpload {
+				filepaths = append(filepaths, fp)
+				uploadnames = append(uploadnames, un)
+			}
 
 		}
 	}
