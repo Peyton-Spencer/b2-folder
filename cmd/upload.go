@@ -22,8 +22,7 @@ import (
 // uploadCmd represents the upload command
 var uploadCmd = &cobra.Command{
 	Use:   "upload",
-	Short: "b2 uploader",
-	Long:  `b2 uploader`,
+	Short: "Upload a folder to a Backblaze bucket",
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := cmd.Context()
 		if *bucket == "" {
@@ -39,7 +38,7 @@ var uploadCmd = &cobra.Command{
 
 		lsOut, err := exec.CommandContext(ctx, "b2", "ls", "--recursive", "b2://"+*bucket).CombinedOutput()
 		if err != nil {
-			slog.Error("b2 ls failed", "error", err)
+			slog.Error("b2 ls failed", "error", err, "bucket", *bucket, "folder", *folder)
 			return
 		}
 		existingFiles := strings.Split(string(lsOut), "\n")

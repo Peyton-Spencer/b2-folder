@@ -1,5 +1,5 @@
 # b2-folder
-- A batch uploader tool for [Backblaze](https://www.backblaze.com/)
+- A folder uploader tool for [Backblaze](https://www.backblaze.com/)
 - Utilizes the [b2 CLI](https://www.backblaze.com/docs/cloud-storage-upload-files-with-the-cli)
 
 ## Install
@@ -9,10 +9,26 @@
 ## Usage
 
 ```
-b2-folder upload -h
-Using b2 version 4.1.0
+b2-folder -h
+Batch upload folders to Backblaze
 
-b2 uploader
+Usage:
+  b2-folder [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  upload      Upload a folder to a Backblaze bucket
+
+Flags:
+  -h, --help   help for b2-folder
+
+Use "b2-folder [command] --help" for more information about a command.
+```
+
+```
+b2-folder upload -h
+Upload a folder to a Backblaze bucket
 
 Usage:
   b2-folder upload [flags]
