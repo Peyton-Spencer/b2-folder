@@ -1,4 +1,6 @@
 # b2-folder
+- A batch uploader tool for [Backblaze](https://www.backblaze.com/)
+- Utilizes the [b2 CLI](https://www.backblaze.com/docs/cloud-storage-upload-files-with-the-cli)
 
 ## Install
 
